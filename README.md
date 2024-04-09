@@ -99,7 +99,7 @@
 - 영향을 가장 많이 미치는 feature를 찾아낼 수도 있다.
 - 예측 성능을 계속해서 향상 시키면 복잡한 규칙 구조를 가지기 때문에 <sub>※</sub>과적합(Overfitting)이 발생해서 예측 성능이 저하 될 수도 있다.
 - 가장 상위 노드를 "루트 노드" 라고 하며, 나머지 분기점을 "서브 노드", 결정된 분류값 노드를 "리프 노드"라고 한다.
-<img src="./images/decision_tree.png" width="550" style="margin-top:20px; margin-bottom:20px">
+
 
 - 복잡도를 감소 시키는 것이 주 목적이며, 정보의 복잡도를 불순도(Impurity)라고 한다.
 - 이를 수치화한 값으로 지니 계수 (Gini coeficient)가 있다.
