@@ -55,3 +55,39 @@
 > 다양한 영역 (운영체제, 서버, 네트워크 등)으로 연계 및 상용화 하기 좋음
 
 #### 머신러닝과 딥러닝은 R 보다는 "파이썬"을 사용하자! 
+
+### 분류 (Classifier)
+- 대표적인 지도학습 방법 중 하나이며, 다양한 문제와 정답을 학습한 뒤 테스트에서 정답을 예측한다.
+- 주어진 문제 & 정답을 먼저 학습한 뒤 새로운 문제에 대한 정답을 예측하는 방식이다.
+- 이진 분류(Binary Classification)의 경우 정답은 0(음성, Negative)과 1(양성,positive)과 같이 True, FLase 값을 가진다.
+- 다중 분류(Multiclass Classification)는 정답이 가질 수 있는 값은 3개 이상이다.(예 : 0,1,2,3)
+
+#### 피처 (Feature)
+- 데이터 세트의 일반 컬럼이며, 2차원 이상의 다차원 데이터까지 통틀어 피처라고 한다.
+- 타겟을 제외한 나머지 속성을 의미한다.
+- 컬럼 : 피처 + 타겟 (전체 컬럼들을 의미)
+#### 레이블(Label), 클래스(Class), 타겟(Target), 결정(Decision)
+- 지도학습 시 , 데이터의 학습을 위해 주어지는 정답을 의미한다.
+- 지도 학습 중, 분류의 경우 이를 레이블 또는 클래스라고 부른다.
+
+#### 데이터 세트 분리
+
+**train_test_split(featur, target, test_size, random_state)**
+
+- 학습 데이터 세트와 테스트 데이터 세트를 분리해준다.
+- feature: 전체 데이터 세트 중 feature
+- target: 전체 데이터 세트 중 target
+- test_size: 테스트 세트의 비율(0 ~ 1)
+- random_state: 매번 동일한 결과를 원할 때, 원하는 seed(기준점)를 작성한다.
+
+#### 모델 학습
+**fit(train_feature, train_target)**
+- 모델을 학습시킬 때 사용한다.
+- train_feature: 훈련 데이터 세트 중 feature(훈련 문제, X_train)
+- train_target: 훈련 데이터 세트 중 target(훈련 정답, y_train)
+
+#### 평가
+**accuracy_score(y_test, dtc.predict(X_test.values))**
+- 모델이 얼마나 잘 예측했는지를 "정확도"라는 평가 지표로 평가할 때 사용한다.
+- y_test: 실제 정답
+- predict(X_test): 예측한 정답
