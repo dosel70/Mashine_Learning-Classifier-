@@ -1,5 +1,5 @@
 ### AI (Artificial Intelligence)
-<img src="./images/intro.png" width='800px'>
+
 
 #### Rule-base AI
 - 특정 상황을 이해하는 전문가가 직접 입력값(문제)과 특징을 전달(규칙)하여 출력값(정답)을 내보내는 알고리즘이다.
