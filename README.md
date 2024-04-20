@@ -358,3 +358,168 @@ GridSearchCV
 - RBF 커널을 사용하게 되면, gamma 하이퍼 파라미터를 조정할 수 있으며, 이는 데이터 포인터들의 영향 범위를 결정한다.
 - gamma가 클수록 하나의 벡터 영향력 거리가 짧아지고, gamma가 작을수록 벡터 영향력 거리가 길어진다.
 - 즉 gamma가 클수록 표준편차가 낮아진다. gamma가 너무 작으면 과소적합될 가능성이 크고, 너무 높으면 과대적합의 위험이 있다.
+
+### Feature Selection
+- 결과 예측에 있어서, 불필요한 feature들로 인해 모델 예측 성능을 떨어뜨릴 가능성을 사전 제거할 수 있다.
+- 타겟 데이터와 관련이 없는 feature들을 제거하여, 타겟 데이터를 가장 잘 예측하는 feature들의 조합(상관관계가 높은)을 찾아내는 것이 목적이다.
+
+#### 🎈용어 정리
+<table style="margin-left: 0">
+    <tr>
+        <th style="text-align: center">표현</th>
+        <th style="text-align: center">정의</th>
+    </tr>
+    <tr>
+        <td style="text-align: center">Feature Engineering</td>
+        <td style="text-align: center">도메인(기본) 지식을 사용하여 데이터에서 피처를 변형 및 생성</td>
+    </tr>
+    <tr>
+        <td style="text-align: center">Feature Extraction</td>
+        <td style="text-align: center">차원축소 등 새로운 중요 피처를 추출</td>
+    </tr>
+    <tr>
+        <td style="text-align: center">Feature Selection</td>
+        <td style="text-align: center">기존 피처에서 원하는 피처만 선택하는 과정</td>
+    </tr>
+</table>
+
+#### Recursive Feature Elimination (RFE)
+- 모델 최초 학습 이후 feature의 중요도를 선정하는 방식이다.
+- feature의 중요도가 낮은 속성들을 차례로 제거하면서 원하는 feature의 개수가 남을 때까지 반복적으로 학습 및 평가를 수행한다.
+- 경우의 수로 제거해가며 학습을 재수행하기 때문에 시간이 오래 걸린다.
+- 몇 개의 feature를 추출해야 할 지 직접 정의해야 하는 것이 단점이다.
+
+
+#### Recursive Feature Elimination Cross Validation (RFECV)
+- RFE의 단점을 보완하기 위해 만들어졌으며, 최고 성능에서의 feature 개수를 알려주고, 해당 feature를 선택해준다.
+- 각 feature마다 Cross Validation을 진행하여 각기 다른 성능을 도출한다.
+- 도출된 성능 수치를 평균 내어 가장 높은 성능을 발휘하는 feature들을 선택한다.  
+
+
+
+#### Permutaion Importance
+- Permutation(순열)이란, 서로 다른 n개의 원소에서 r개를 중복없이 순서에 상관있게 선택하는 혹은 나열하는 것이다. 여기서 원소는 feature이며, 각 feature별로 중복없이 선택하여 feature의 중요도를 검증하는 방식이다.
+- 임의의 feature의 요소 순서를 무작위로 섞은 후 성능 감소에 대한 평균을 구한다.
+- 중요도를 판단하려는 feature의 요소를 noise로 만들어서 전과 후를 비교한 뒤 중요도를 판단한다.
+- 임의의 feature를 noise로 만들었을 때 성능이 떨어진 정도로 feature importance를 판별할 수 있다.
+
+### K-최근접 이웃 알고리즘 (K-Nearest Neighbor, KNN)
+- 임의의 데이터가 주어지면 그 주변(이웃)의 데이터를 살펴본 뒤 더 많은 데이터가 포함되어 있는 범주로 분류하는 방식이다.
+- 가장 간단한 머신러닝 알고리즘으로서, 직관적이고 나름 성능도 괜찮다.
+- K를 어떻게 정하는지에 따라서 결과값이 바뀔 수 있다. K는 임의의 데이터가 주어졌을 때 가까운 이웃들의 개수이고 기본값은 5이다.
+- K는 가장 가까운 5개의 이웃 데이터를 기반으로 분류하며, 일반적으로 홀수를 사용한다. 짝수일 경우 동점이 되어 하나의 결과를 도출할 수 없기 때문이다.
+
+- KNN은 fit을 통해 훈련시키면, 학습하지 않고 저장만 해놓는다. 따라서 이러한 모델을 Lazy Model이라고 부른다.
+- 새로운 데이터가 주어지면 그제서야 이웃 데이터를 보고 분류해나간다. 따라서 사전 모델링이 필요없는 real-time 예측이 이루어진다.
+
+- 데이터와 데이터 사이의 거리를 구해야 더 가까운 클래스로 분류할 수 있으며,  
+  이는 유클리드 거리(Euclidean Distance)방식과 맨해튼 거리(Manhattan Distance)방식이 있다.
+
+### 앙상블 학습 (Ensemble Learning)
+- 어떤 데이터의 값을 예측한다고 할 때, 하나의 모델만 가지고 결과를 도출할 수도 있지만,  
+  여러 개의 모델을 조화롭게 학습시켜 그 모델들의 예측 결과들을 이용한다면, 더 정확한 예측값을 구할 수 있다.
+- 여러 개의 분류기를 생성하고 그 예측을 결합하여 1개의 분류기를 사용할 때보다 더 정확하고 신뢰성 높은 예측을 도출하는 기법이다.
+- 강력한 하나의 모델을 사용하는 것보다 약한 모델을 여러 개 조합하여 더 정확한 예측에 도움을 주는 방식이다.
+- 앙상블 학습의 주요 방법은 배깅(Bagging)과 부스팅(Boosting)이다.
+
+#### 보팅(Voting)
+- "하나의 데이터 세트"에 대해 서로 다른 알고리즘을 가진 분류기를 결합하는 방식이다.
+- 서로 다른 분류기들에 "동일한 데이터 세트"를 병렬로 학습해서 예측값을 도출하고, 이를 합산하여 최종 예측값을 산출해내는 방식을 말한다.  
+
+  
+> 1. 하드 보팅 (Hard Voting)
+> - 각 분류기가 만든 예측값을 다수결로 투표해서 가장 많은 표를 얻은 예측값을 최종 예측값으로 결정하는 보팅 방식을 말한다.
+>
+>  2. 소프트 보팅 (Soft Voting)
+> - 각 분류기가 예측한 타겟별 확률을 평균내어 가장 높은 확률의 타겟을 최종 예측값으로 도출한다.
+
+
+#### 배깅 (Bagging, Bootstrap Aggregation)
+- 하나의 데이터 세트에서 "여러 번 중복을 허용하면서 학습 데이터 세트를 랜덤하게 뽑은 뒤(Bootstrap)" 하나의 예측기 여러 개를 병렬로 학습시켜서 결과물을 집계(Aggregation)하는 방법이다.
+- Voting 방식과 달리 같은 알고리즘의 분류기를 사용하고 훈련 세트를 무작위로 구성하여 각기 다르게(독립적으로, 병렬로) 학습시킨다.
+- 학습 데이터가 충분하지 않더라도 충분한 학습효과를 주어 과적합등의 문제를 해결하는 데 도움을 준다.
+- 배깅방식을 사용한 대표적인 알고리즘이 바로 랜덤 포레스트 알고리즘이다.
+
+#### 부스팅(Boosting)
+- 이전 분류기의 학습 결과를 토대로 다음 분류기의 학습 데이터의 샘플 가중치를 조정해서 "순차적으로" 학습을 진행하는 방법이다.
+- 이전 분류기를 계속 개선해 나가는 방향으로 학습이 진행되고, 오답에 대한 높은 가중치를 부여하므로 정확도가 높게 나타난다.
+- 높은 가중치를 부여하기 때문에 이상치(Outlier)에 취약할 수 있다.
+
+> 1. Adaboost(Adaptive boosting)
+> - 부스팅에서 가장 기본 기법이며, 결정 트리와 비슷한 알고리즘을 사용하지만 뻗어나가지(tree) 않고 하나의 조건식만 사용(stump)하여 결정한다.
+> - 여러 개의 stump로 구성되어 있으며, 이를 Forest of stumps라고 한다.
+> - stump는 조건식 한 개와 두 갈래의 참, 거짓 리프 노드가 있는 형태이다.
+> - tree와 다르게, stump는 단 하나의 질문으로 데이터를 분류해야하기 때문에 약한 학습기(weak learner)이다.
+>
+> - 결과에 미치는 영향이 큰 stump를 Amount of Say가 높다(가중치가 높다)고 한다.
+> - 각 stump의 error는 다음 stump의 결과에 영향을 미치고 줄줄이 마지막 스텀프까지 영향을 미친다.
+> - 모든 stump의 Amount of Say를 수치로 구한 뒤 합치면, Total Amount of Say가 나오고 이를 통해 최종 분류가 된다.
+> - 하나의 stump는 약한 학습기이지만 여러 스텀프를 모으면 강한 학습기가 된다.
+>
+> - Total Error가 0이면 항상 올바른 분류를 한다는 뜻이고, 1이면 항상 반대로 분류를 한다는 뜻이다.
+> - 만약 Total Error가 0.5라면 Amount of Say는 0이고, 이는 확률이 반반이기 때문에 분류기로서 분류결과를 랜덤으로 판단하는 것과 같다.
+>
+> 2. GBM(Gradient Boost Machine)
+> - Adaboost와 유사하지만, 에러를 최소화하기 위해 가중치를 업데이트할 때 경사 하강법(Gradient Descent)을 이용한다.
+> - GBM은 과적합에도 강하고 뛰어난 성능을 보이지만, 병렬 처리가 되지 않아서 수행 시간이 오래 걸린다는 단점이 있다.
+> - 경사 하강법이란, 오류를 최소화하기 위해 Loss function의 최소값까지 점차 하강하면서 찾아나가는 기법이다.
+> - 모델 A를 통해 y를 예측하고 남은 잔차(residual, 에러의 비율)를 다시 B라는 모델을 통해 예측하고 A + B모델을 통해 y를 예측하는 방식이다.
+> - 잔차를 계속 줄여나가며, 훈련 데이터 세트를 잘 예측하는 모델을 만들 수 있게 된다.
+> - 잔차를 계속 줄이다보면 복잡도가 증가하여 과적합이 일어날 수도 있다는 단점이 있다.
+>
+> 3. XGBoost(eXtra Gradient Boost)
+> - 트리 기반의 앙상블 학습에서 가장 각광받고 있는 알고리즘 중 하나이며, 분류에 있어서 일반적으로 다른 머신 러닝보다 뛰어난 예측 성능을 나타낸다.
+> - GBM에 기반하고 있지만 병렬 CPU 환경에서 병렬 학습이 가능하기 때문에 기존 GBM보다 빠르게 학습을 완료할 수 있다.
+> - 하이퍼 파라미터를 조정하여 분할 깊이를 변경할 수 있지만, tree pruning(가지치기)으로 더 이상 긍정 이득이 없는 분할을 가지치기해서 분할 수를 줄이는 추가적인 장점을 가지고 있다.
+> - 데이터 수가 적을 때 활용 가능
+>
+> - 조기 중단 기능(Early Stopping)은 특정 반복 횟수만큼 더 이상 loss function이 감소하지 않으면 수행을 종료할 수 있다. 학습 시간을 단축시킬 수 있으며, 최적화 튜닝 시 적절하게 사용 가능하다. 하지만, 반복 횟수를 너무 낮게 설정하면, 최적화 전에 학습이 종료될 수 있기 때문에 조심해야 한다.
+
+> 4. LightGBM(Light Gradient Boosting Machine)
+> - XGBoost의 향상된 버전으로서 결정트리 알고리즘을 기반으로 순위 지정, 분류 및 기타 여러 기계 학습 작업에 사용할 수 있다.
+> - 기존 부스팅 방식과 마찬가지로 각각의 새로운 분류기가 이전 트리의 잔차를 조정해서 모델이 향상되는 방식으로 결합되고, 마지막으로 추가된 트리는 각 단계의 결과를 집계하여 강력한 분류기가 될 수 있다.
+> - XGBoost와 달리 GOSS 알고리즘을 사용해서 수직으로 트리를 성장시킨다. 즉, 다른 알고리즘은 레벨(depth) 단위로 성장시키지만, LightGBM은 리프(leaf) 단위로 성장시킨다.
+> - 인코딩을 따로 할 필요 없이 카테고리형 feature를 최적으로 변환하고 이에 따른 노드 분할을 수행한다.  
+>   astype('category')로 변환할 수 있으며, 이는 다른 다양한 인코딩 방식보다 월등히 우수하다.  
+> - GOSS 논문  
+>   https://proceedings.neurips.cc/paper_files/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf  
+> - 데이터 수가 클때 활용 가능
+>
+#### 보팅 (Voting)
+**VotingClassifier(n_estimators, voting)**
+- n_estimators: 추가할 모델 객체를 list형태로 전달한다. 각 모델은 튜플 형태인 ('key', model)로 작성한다.
+- voting: 'soft', 'hard' 둘 중 선택한다(default: 'hard')
+
+#### 배깅(Bagging) - 랜덤 포레스트(Random Forest)
+**RandomForestClassifier(n_estimators, min_samples_split, min_samples_leaf, n_jobs)**
+
+- n_estimators: 생성할 tree(모델)의 개수를 작성한다(default: 50)
+
+#### 부스팅(Boosting)
+**AdaBoostClassifier(base_estimators, n_estimators, learning_rate)**
+- base_estimators: 학습에 사용하는 알고리즘을 선택한다(default: DecisionTreeClassifier(max_depth=1)).
+- n_estimators: 생성할 약한 학습기의 개수를 지정한다(default: 50).
+- learning_rate: 학습을 진행할 때마다 적용하는 학습률(0~1사이의 값), 약한 학습기가 순차적으로 오류값을 보정해나갈 때 적용하는 계수이며, 낮은 만큼 최소 손실값을 찾아 예측성능이 높아질 수 있지만, 그 만큼 많은 수의 트리가 필요하고 시간이 많이 소요된다(default: 1)
+
+🎈 학습률  
+책 100p를 10명의 학생이 공부한다고 했을 때, 10p씩 공부한다.  
+이 때, 1명의 학습률을 0.1로 낮추면, 10p를 공부하는 데 10명이 필요하다.  
+위 예시를 에이다 부스팅에 적용하면, 학생 1명이 stump 1개이고 페이지 수가 학습양이다.  
+학습률을 낮출 수록 더 자세히 즉, 손실값을 꼼꼼히 잘 볼 수 있지만 그 만큼 많은 학생이 필요하고 시간도 더 걸린다.
+
+#### 부스팅(Boosting) - GBM(Gradient Boosting Machine)
+**GradientBoostingClassifier(n_estimators, loss, learning_rate, subsample)**
+- n_estimators: 약한 학습기의 개수이며, 많을 수록 일정 수준까지는 좋아지지만 많을 수록 시간도 오래 걸리고 과적합의 위험이 있다.  
+- loss: 경사 하강법에서 사용할 loss function을 지정한다(default: 'log_loss'). 만약 지수적 감쇠를 사용하고자 한다면, 'exponential'을 지정한다.
+
+- learning_rate: 학습을 진행할 때마다 적용하는 학습률(0~1사이의 값), 약한 학습기가 순차적으로 오류값을 보정해나갈 때 적용하는 계수이며, 낮은 만큼 최소 손실값을 찾아 예측성능이 높아질 수 있지만, 그 만큼 많은 수의 트리가 필요하고 시간이 많이 소요된다(default: 1)
+- subsample: 학습에 사용하는 데이터의 샘플링 비율이다(default: 1(100%)). 과적합 방지 시 1보다 작은 값으로 설정한다.
+
+#### 부스팅(Boosting) - XGBoost(eXtra Gradient Boost)
+**XGBClassifier(n_estimators, learning_rate, subsample, eval_set, early_stopping_rounds)**
+- eval_set: 예측 오류값을 줄일 수 있도록 반복하면서 학습이 진행되는데, 이 때 학습은 학습 데이터로 하고 예측 오류값 평가는 eval_set으로 지정된 검증 세트로 평가한다.
+- early_stopping_rounds: 지정한 횟수동안 오류가 개선되지 않으면 더 이상 학습은 진행하지 않는다.
+
+#### 부스팅(Boosting) - LightGBM(Light Gradient Boosting Machine)
+**LGBMClassifier(n_estimators, learning_rate, subsmaple, eval_set)**
+- n_estimators: default: 100
